@@ -20,6 +20,8 @@ package org.apache.spark.executor
 import com.codahale.metrics.{Gauge, MetricRegistry}
 
 import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.hdfs.DistributedFileSystem
+import org.apache.hadoop.fs.LocalFileSystem
 
 import scala.collection.JavaConversions._
 

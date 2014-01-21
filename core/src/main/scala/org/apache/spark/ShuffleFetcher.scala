@@ -27,10 +27,7 @@ private[spark] abstract class ShuffleFetcher {
    * Fetch the shuffle outputs for a given ShuffleDependency.
    * @return An iterator over the elements of the fetched shuffle outputs.
    */
-  def fetch[T](
-      shuffleId: Int,
-      reduceId: Int,
-      context: TaskContext,
+  def fetch[T](shuffleId: Int, reduceId: Int, metrics: TaskMetrics,
       serializer: Serializer = SparkEnv.get.serializerManager.default): Iterator[T]
 
   /** Stop the fetcher */

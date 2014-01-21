@@ -23,24 +23,20 @@ import org.apache.spark.util.Utils
 
 private[spark]
 case class StorageStatus(blockManagerId: BlockManagerId, maxMem: Long,
-  blocks: Map[BlockId, BlockStatus]) {
+  blocks: Map[String, BlockStatus]) {
 
-  def memUsed() = blocks.values.map(_.memSize).reduceOption(_+_).getOrElse(0L)
+  def memUsed(blockPrefix: String = "") = {
+    blocks.filterKeys(_.startsWith(blockPrefix)).values.map(_.memSize).
+      reduceOption(_+_).getOrElse(0l)
+  }
 
-  def memUsedByRDD(rddId: Int) =
-    rddBlocks.filterKeys(_.rddId == rddId).values.map(_.memSize).reduceOption(_+_).getOrElse(0L)
-
-  def diskUsed() = blocks.values.map(_.diskSize).reduceOption(_+_).getOrElse(0L)
-
-  def diskUsedByRDD(rddId: Int) =
-    rddBlocks.filterKeys(_.rddId == rddId).values.map(_.diskSize).reduceOption(_+_).getOrElse(0L)
+  def diskUsed(blockPrefix: String = "") = {
+    blocks.filterKeys(_.startsWith(blockPrefix)).values.map(_.diskSize).
+      reduceOption(_+_).getOrElse(0l)
+  }
 
   def memRemaining : Long = maxMem - memUsed()
 
-  def rddBlocks = blocks.flatMap {
-    case (rdd: RDDBlockId, status) => Some(rdd, status)
-    case _ => None
-  }
 }
 
 case class RDDInfo(id: Int, name: String, storageLevel: StorageLevel,
@@ -64,7 +60,7 @@ object StorageUtils {
   /* Returns RDD-level information, compiled from a list of StorageStatus objects */
   def rddInfoFromStorageStatus(storageStatusList: Seq[StorageStatus],
     sc: SparkContext) : Array[RDDInfo] = {
-    rddInfoFromBlockStatusList(storageStatusList.flatMap(_.rddBlocks).toMap[RDDBlockId, BlockStatus], sc)
+    rddInfoFromBlockStatusList(storageStatusList.flatMap(_.blocks).toMap, sc)
   }
 
   /* Returns a map of blocks to their locations, compiled from a list of StorageStatus objects */
@@ -75,21 +71,26 @@ object StorageUtils {
   }
 
   /* Given a list of BlockStatus objets, returns information for each RDD */
-  def rddInfoFromBlockStatusList(infos: Map[RDDBlockId, BlockStatus],
+  def rddInfoFromBlockStatusList(infos: Map[String, BlockStatus],
     sc: SparkContext) : Array[RDDInfo] = {
 
     // Group by rddId, ignore the partition name
-    val groupedRddBlocks = infos.groupBy { case(k, v) => k.rddId }.mapValues(_.values.toArray)
+    val groupedRddBlocks = infos.filterKeys(_.startsWith("rdd_")).groupBy { case(k, v) =>
+      k.substring(0,k.lastIndexOf('_'))
+    }.mapValues(_.values.toArray)
 
     // For each RDD, generate an RDDInfo object
-    val rddInfos = groupedRddBlocks.map { case (rddId, rddBlocks) =>
+    val rddInfos = groupedRddBlocks.map { case (rddKey, rddBlocks) =>
       // Add up memory and disk sizes
       val memSize = rddBlocks.map(_.memSize).reduce(_ + _)
       val diskSize = rddBlocks.map(_.diskSize).reduce(_ + _)
 
+      // Find the id of the RDD, e.g. rdd_1 => 1
+      val rddId = rddKey.split("_").last.toInt
+
       // Get the friendly name and storage level for the RDD, if available
       sc.persistentRdds.get(rddId).map { r =>
-        val rddName = Option(r.name).getOrElse(rddId.toString)
+        val rddName = Option(r.name).getOrElse(rddKey)
         val rddStorageLevel = r.getStorageLevel
         RDDInfo(rddId, rddName, rddStorageLevel, rddBlocks.length, r.partitions.size, memSize, diskSize)
       }
@@ -100,14 +101,16 @@ object StorageUtils {
     rddInfos
   }
 
-  /* Filters storage status by a given RDD id. */
-  def filterStorageStatusByRDD(storageStatusList: Array[StorageStatus], rddId: Int)
-    : Array[StorageStatus] = {
+  /* Removes all BlockStatus object that are not part of a block prefix */
+  def filterStorageStatusByPrefix(storageStatusList: Array[StorageStatus],
+    prefix: String) : Array[StorageStatus] = {
 
     storageStatusList.map { status =>
-      val newBlocks = status.rddBlocks.filterKeys(_.rddId == rddId).toMap[BlockId, BlockStatus]
+      val newBlocks = status.blocks.filterKeys(_.startsWith(prefix))
       //val newRemainingMem = status.maxMem - newBlocks.values.map(_.memSize).reduce(_ + _)
       StorageStatus(status.blockManagerId, status.maxMem, newBlocks)
     }
+
   }
+
 }

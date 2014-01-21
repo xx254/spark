@@ -26,20 +26,17 @@ import scala.collection.mutable.{ListBuffer, Map, Set}
 import scala.math
 
 import org.apache.spark._
-import org.apache.spark.storage.{BroadcastBlockId, StorageLevel}
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.util.Utils
 
-@deprecated("Use TorrentBroadcast", "0.8.1")
 private[spark] class BitTorrentBroadcast[T](@transient var value_ : T, isLocal: Boolean, id: Long)
   extends Broadcast[T](id)
   with Logging
   with Serializable {
 
-  logWarning("BitTorrentBroadcast is deprecated. Use TorrentBroadcast.")
-
   def value = value_
 
-  def blockId = BroadcastBlockId(id)
+  def blockId: String = "broadcast_" + id
 
   MultiTracker.synchronized {
     SparkEnv.get.blockManager.putSingle(blockId, value_, StorageLevel.MEMORY_AND_DISK, false)
@@ -329,8 +326,7 @@ private[spark] class BitTorrentBroadcast[T](@transient var value_ : T, isLocal: 
     private var blocksInRequestBitVector = new BitSet(totalBlocks)
 
     override def run() {
-      var threadPool = Utils.newDaemonFixedThreadPool(
-        MultiTracker.MaxChatSlots, "Bit Torrent Chatter")
+      var threadPool = Utils.newDaemonFixedThreadPool(MultiTracker.MaxChatSlots)
 
       while (hasBlocks.get < totalBlocks) {
         var numThreadsToCreate = 0
@@ -740,7 +736,7 @@ private[spark] class BitTorrentBroadcast[T](@transient var value_ : T, isLocal: 
     private var setOfCompletedSources = Set[SourceInfo]()
 
     override def run() {
-      var threadPool = Utils.newDaemonCachedThreadPool("Bit torrent guide multiple requests")
+      var threadPool = Utils.newDaemonCachedThreadPool()
       var serverSocket: ServerSocket = null
 
       serverSocket = new ServerSocket(0)
@@ -931,8 +927,7 @@ private[spark] class BitTorrentBroadcast[T](@transient var value_ : T, isLocal: 
   class ServeMultipleRequests
   extends Thread with Logging {
     // Server at most MultiTracker.MaxChatSlots peers
-    var threadPool = Utils.newDaemonFixedThreadPool(
-      MultiTracker.MaxChatSlots, "Bit torrent serve multiple requests")
+    var threadPool = Utils.newDaemonFixedThreadPool(MultiTracker.MaxChatSlots)
 
     override def run() {
       var serverSocket = new ServerSocket(0)

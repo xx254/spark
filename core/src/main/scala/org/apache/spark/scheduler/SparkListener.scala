@@ -18,21 +18,19 @@
 package org.apache.spark.scheduler
 
 import java.util.Properties
+import org.apache.spark.scheduler.cluster.TaskInfo
 import org.apache.spark.util.{Utils, Distribution}
 import org.apache.spark.{Logging, SparkContext, TaskEndReason}
 import org.apache.spark.executor.TaskMetrics
 
 sealed trait SparkListenerEvents
 
-case class SparkListenerStageSubmitted(stage: StageInfo, properties: Properties)
+case class SparkListenerStageSubmitted(stage: Stage, taskSize: Int, properties: Properties)
      extends SparkListenerEvents
 
-case class StageCompleted(val stage: StageInfo) extends SparkListenerEvents
+case class StageCompleted(val stageInfo: StageInfo) extends SparkListenerEvents
 
 case class SparkListenerTaskStart(task: Task[_], taskInfo: TaskInfo) extends SparkListenerEvents
-
-case class SparkListenerTaskGettingResult(
-  task: Task[_], taskInfo: TaskInfo) extends SparkListenerEvents
 
 case class SparkListenerTaskEnd(task: Task[_], reason: TaskEndReason, taskInfo: TaskInfo,
      taskMetrics: TaskMetrics) extends SparkListenerEvents
@@ -57,13 +55,7 @@ trait SparkListener {
   /**
    * Called when a task starts
    */
-  def onTaskStart(taskStart: SparkListenerTaskStart) { }
-
-  /**
-   * Called when a task begins remotely fetching its result (will not be called for tasks that do
-   * not need to fetch the result remotely).
-   */
- def onTaskGettingResult(taskGettingResult: SparkListenerTaskGettingResult) { }
+  def onTaskStart(taskEnd: SparkListenerTaskStart) { }
 
   /**
    * Called when a task ends
@@ -89,7 +81,7 @@ class StatsReportListener extends SparkListener with Logging {
   override def onStageCompleted(stageCompleted: StageCompleted) {
     import org.apache.spark.scheduler.StatsReportListener._
     implicit val sc = stageCompleted
-    this.logInfo("Finished stage: " + stageCompleted.stage)
+    this.logInfo("Finished stage: " + stageCompleted.stageInfo)
     showMillisDistribution("task runtime:", (info, _) => Some(info.duration))
 
     //shuffle write
@@ -102,7 +94,7 @@ class StatsReportListener extends SparkListener with Logging {
 
     //runtime breakdown
 
-    val runtimePcts = stageCompleted.stage.taskInfos.map{
+    val runtimePcts = stageCompleted.stageInfo.taskInfos.map{
       case (info, metrics) => RuntimePercentage(info.duration, metrics)
     }
     showDistribution("executor (non-fetch) time pct: ", Distribution(runtimePcts.map{_.executorPct * 100}), "%2.0f %%")
@@ -120,7 +112,7 @@ object StatsReportListener extends Logging {
   val percentilesHeader = "\t" + percentiles.mkString("%\t") + "%"
 
   def extractDoubleDistribution(stage:StageCompleted, getMetric: (TaskInfo,TaskMetrics) => Option[Double]): Option[Distribution] = {
-    Distribution(stage.stage.taskInfos.flatMap {
+    Distribution(stage.stageInfo.taskInfos.flatMap{
       case ((info,metric)) => getMetric(info, metric)})
   }
 

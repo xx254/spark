@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-package org.apache
-
 /**
  * Core Spark functionality. [[org.apache.spark.SparkContext]] serves as the main entry point to
  * Spark, while [[org.apache.spark.rdd.RDD]] is the data type representing a distributed collection,

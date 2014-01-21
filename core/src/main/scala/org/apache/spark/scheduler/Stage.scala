@@ -39,7 +39,6 @@ import org.apache.spark.storage.BlockManagerId
 private[spark] class Stage(
     val id: Int,
     val rdd: RDD[_],
-    val numTasks: Int,
     val shuffleDep: Option[ShuffleDependency[_,_]],  // Output shuffle if stage is a map stage
     val parents: List[Stage],
     val jobId: Int,
@@ -50,6 +49,11 @@ private[spark] class Stage(
   val numPartitions = rdd.partitions.size
   val outputLocs = Array.fill[List[MapStatus]](numPartitions)(Nil)
   var numAvailableOutputs = 0
+
+  /** When first task was submitted to scheduler. */
+  var submissionTime: Option[Long] = None
+  var completionTime: Option[Long] = None
+
   private var nextAttemptId = 0
 
   def isAvailable: Boolean = {

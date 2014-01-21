@@ -17,10 +17,8 @@
 
 package org.apache.spark.deploy.master
 
-private[spark] object WorkerState
-  extends Enumeration("ALIVE", "DEAD", "DECOMMISSIONED", "UNKNOWN") {
-
+private[spark] object WorkerState extends Enumeration("ALIVE", "DEAD", "DECOMMISSIONED") {
   type WorkerState = Value
 
-  val ALIVE, DEAD, DECOMMISSIONED, UNKNOWN = Value
+  val ALIVE, DEAD, DECOMMISSIONED = Value
 }

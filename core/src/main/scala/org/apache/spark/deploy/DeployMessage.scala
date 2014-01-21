@@ -21,14 +21,12 @@ import scala.collection.immutable.List
 
 import org.apache.spark.deploy.ExecutorState.ExecutorState
 import org.apache.spark.deploy.master.{WorkerInfo, ApplicationInfo}
-import org.apache.spark.deploy.master.RecoveryState.MasterState
 import org.apache.spark.deploy.worker.ExecutorRunner
 import org.apache.spark.util.Utils
 
 
 private[deploy] sealed trait DeployMessage extends Serializable
 
-/** Contains messages sent between Scheduler actor nodes. */
 private[deploy] object DeployMessages {
 
   // Worker to Master
@@ -54,20 +52,17 @@ private[deploy] object DeployMessages {
       exitStatus: Option[Int])
     extends DeployMessage
 
-  case class WorkerSchedulerStateResponse(id: String, executors: List[ExecutorDescription])
-
   case class Heartbeat(workerId: String) extends DeployMessage
 
   // Master to Worker
 
-  case class RegisteredWorker(masterUrl: String, masterWebUiUrl: String) extends DeployMessage
+  case class RegisteredWorker(masterWebUiUrl: String) extends DeployMessage
 
   case class RegisterWorkerFailed(message: String) extends DeployMessage
 
-  case class KillExecutor(masterUrl: String, appId: String, execId: Int) extends DeployMessage
+  case class KillExecutor(appId: String, execId: Int) extends DeployMessage
 
   case class LaunchExecutor(
-      masterUrl: String,
       appId: String,
       execId: Int,
       appDesc: ApplicationDescription,
@@ -81,11 +76,9 @@ private[deploy] object DeployMessages {
   case class RegisterApplication(appDescription: ApplicationDescription)
     extends DeployMessage
 
-  case class MasterChangeAcknowledged(appId: String)
-
   // Master to Client
 
-  case class RegisteredApplication(appId: String, masterUrl: String) extends DeployMessage
+  case class RegisteredApplication(appId: String) extends DeployMessage
 
   // TODO(matei): replace hostPort with host
   case class ExecutorAdded(id: Int, workerId: String, hostPort: String, cores: Int, memory: Int) {
@@ -101,10 +94,6 @@ private[deploy] object DeployMessages {
 
   case object StopClient
 
-  // Master to Worker & Client
-
-  case class MasterChanged(masterUrl: String, masterWebUiUrl: String)
-
   // MasterWebUI To Master
 
   case object RequestMasterState
@@ -112,8 +101,7 @@ private[deploy] object DeployMessages {
   // Master to MasterWebUI
 
   case class MasterStateResponse(host: String, port: Int, workers: Array[WorkerInfo],
-    activeApps: Array[ApplicationInfo], completedApps: Array[ApplicationInfo],
-    status: MasterState) {
+    activeApps: Array[ApplicationInfo], completedApps: Array[ApplicationInfo]) {
 
     Utils.checkHost(host, "Required hostname")
     assert (port > 0)
@@ -135,7 +123,12 @@ private[deploy] object DeployMessages {
     assert (port > 0)
   }
 
-  // Actor System to Worker
+  // Actor System to Master
 
-  case object SendHeartbeat
+  case object CheckForWorkerTimeOut
+
+  case object RequestWebUIPort
+
+  case class WebUIPortResponse(webUIBoundPort: Int)
+
 }

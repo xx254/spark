@@ -48,7 +48,7 @@ class BlockManagerMasterActor(val isLocal: Boolean) extends Actor with Logging {
   private val blockManagerIdByExecutor = new mutable.HashMap[String, BlockManagerId]
 
   // Mapping from block id to the set of block managers that have the block.
-  private val blockLocations = new JHashMap[BlockId, mutable.HashSet[BlockManagerId]]
+  private val blockLocations = new JHashMap[String, mutable.HashSet[BlockManagerId]]
 
   val akkaTimeout = Duration.create(
     System.getProperty("spark.akka.askTimeout", "10").toLong, "seconds")
@@ -129,9 +129,10 @@ class BlockManagerMasterActor(val isLocal: Boolean) extends Actor with Logging {
     // First remove the metadata for the given RDD, and then asynchronously remove the blocks
     // from the slaves.
 
+    val prefix = "rdd_" + rddId + "_"
     // Find all blocks for the given RDD, remove the block from both blockLocations and
     // the blockManagerInfo that is tracking the blocks.
-    val blocks = blockLocations.keys.flatMap(_.asRDDId).filter(_.rddId == rddId)
+    val blocks = blockLocations.keySet().filter(_.startsWith(prefix))
     blocks.foreach { blockId =>
       val bms: mutable.HashSet[BlockManagerId] = blockLocations.get(blockId)
       bms.foreach(bm => blockManagerInfo.get(bm).foreach(_.removeBlock(blockId)))
@@ -197,7 +198,7 @@ class BlockManagerMasterActor(val isLocal: Boolean) extends Actor with Logging {
 
   // Remove a block from the slaves that have it. This can only be used to remove
   // blocks that the master knows about.
-  private def removeBlockFromWorkers(blockId: BlockId) {
+  private def removeBlockFromWorkers(blockId: String) {
     val locations = blockLocations.get(blockId)
     if (locations != null) {
       locations.foreach { blockManagerId: BlockManagerId =>
@@ -227,7 +228,9 @@ class BlockManagerMasterActor(val isLocal: Boolean) extends Actor with Logging {
   }
 
   private def register(id: BlockManagerId, maxMemSize: Long, slaveActor: ActorRef) {
-    if (!blockManagerInfo.contains(id)) {
+    if (id.executorId == "<driver>" && !isLocal) {
+      // Got a register message from the master node; don't register it
+    } else if (!blockManagerInfo.contains(id)) {
       blockManagerIdByExecutor.get(id.executorId) match {
         case Some(manager) =>
           // A block manager of the same executor already exists.
@@ -244,7 +247,7 @@ class BlockManagerMasterActor(val isLocal: Boolean) extends Actor with Logging {
 
   private def updateBlockInfo(
       blockManagerId: BlockManagerId,
-      blockId: BlockId,
+      blockId: String,
       storageLevel: StorageLevel,
       memSize: Long,
       diskSize: Long) {
@@ -289,11 +292,11 @@ class BlockManagerMasterActor(val isLocal: Boolean) extends Actor with Logging {
     sender ! true
   }
 
-  private def getLocations(blockId: BlockId): Seq[BlockManagerId] = {
+  private def getLocations(blockId: String): Seq[BlockManagerId] = {
     if (blockLocations.containsKey(blockId)) blockLocations.get(blockId).toSeq else Seq.empty
   }
 
-  private def getLocationsMultipleBlockIds(blockIds: Array[BlockId]): Seq[Seq[BlockManagerId]] = {
+  private def getLocationsMultipleBlockIds(blockIds: Array[String]): Seq[Seq[BlockManagerId]] = {
     blockIds.map(blockId => getLocations(blockId))
   }
 
@@ -327,7 +330,7 @@ object BlockManagerMasterActor {
     private var _remainingMem: Long = maxMem
 
     // Mapping from block id to its status.
-    private val _blocks = new JHashMap[BlockId, BlockStatus]
+    private val _blocks = new JHashMap[String, BlockStatus]
 
     logInfo("Registering block manager %s with %s RAM".format(
       blockManagerId.hostPort, Utils.bytesToString(maxMem)))
@@ -336,7 +339,7 @@ object BlockManagerMasterActor {
       _lastSeenMs = System.currentTimeMillis()
     }
 
-    def updateBlockInfo(blockId: BlockId, storageLevel: StorageLevel, memSize: Long,
+    def updateBlockInfo(blockId: String, storageLevel: StorageLevel, memSize: Long,
                         diskSize: Long) {
 
       updateLastSeenMs()
@@ -380,7 +383,7 @@ object BlockManagerMasterActor {
       }
     }
 
-    def removeBlock(blockId: BlockId) {
+    def removeBlock(blockId: String) {
       if (_blocks.containsKey(blockId)) {
         _remainingMem += _blocks.get(blockId).memSize
         _blocks.remove(blockId)
@@ -391,7 +394,7 @@ object BlockManagerMasterActor {
 
     def lastSeenMs: Long = _lastSeenMs
 
-    def blocks: JHashMap[BlockId, BlockStatus] = _blocks
+    def blocks: JHashMap[String, BlockStatus] = _blocks
 
     override def toString: String = "BlockManagerInfo " + timeMs + " " + _remainingMem
 

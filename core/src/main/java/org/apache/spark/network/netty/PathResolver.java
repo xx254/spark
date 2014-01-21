@@ -17,10 +17,13 @@
 
 package org.apache.spark.network.netty;
 
-import org.apache.spark.storage.BlockId;
-import org.apache.spark.storage.FileSegment;
 
 public interface PathResolver {
-  /** Get the file segment in which the given block resides. */
-  public FileSegment getBlockLocation(BlockId blockId);
+  /**
+   * Get the absolute path of the file
+   *
+   * @param fileId
+   * @return the absolute path of file
+   */
+  public String getAbsolutePath(String fileId);
 }

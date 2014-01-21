@@ -17,13 +17,12 @@
 
 package org.apache.spark.api.python
 
-import java.util.Arrays
-
 import org.apache.spark.Partitioner
+import java.util.Arrays
 import org.apache.spark.util.Utils
 
 /**
- * A [[org.apache.spark.Partitioner]] that performs handling of long-valued keys, for use by the Python API.
+ * A [[org.apache.spark.Partitioner]] that performs handling of byte arrays, for use by the Python API.
  *
  * Stores the unique id() of the Python-side partitioning function so that it is incorporated into
  * equality comparisons.  Correctness requires that the id is a unique identifier for the
@@ -31,7 +30,6 @@ import org.apache.spark.util.Utils
  * function).  This can be ensured by using the Python id() function and maintaining a reference
  * to the Python partitioning function so that its id() is not reused.
  */
-
 private[spark] class PythonPartitioner(
   override val numPartitions: Int,
   val pyPartitionFunctionId: Long)
@@ -39,9 +37,7 @@ private[spark] class PythonPartitioner(
 
   override def getPartition(key: Any): Int = key match {
     case null => 0
-    // we don't trust the Python partition function to return valid partition ID's so
-    // let's do a modulo numPartitions in any case
-    case key: Long => Utils.nonNegativeMod(key.toInt, numPartitions)
+    case key: Array[Byte] => Utils.nonNegativeMod(Arrays.hashCode(key), numPartitions)
     case _ => Utils.nonNegativeMod(key.hashCode(), numPartitions)
   }
 

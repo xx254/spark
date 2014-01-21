@@ -46,12 +46,6 @@ private[spark] case class ExceptionFailure(
     metrics: Option[TaskMetrics])
   extends TaskEndReason
 
-/**
- * The task finished successfully, but the result was lost from the executor's block manager before
- * it was fetched.
- */
-private[spark] case object TaskResultLost extends TaskEndReason
-
-private[spark] case object TaskKilled extends TaskEndReason
-
 private[spark] case class OtherFailure(message: String) extends TaskEndReason
+
+private[spark] case class TaskResultTooBigFailure() extends TaskEndReason

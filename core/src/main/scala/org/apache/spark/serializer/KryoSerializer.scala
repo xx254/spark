@@ -23,34 +23,38 @@ import java.io.{EOFException, InputStream, OutputStream}
 import com.esotericsoftware.kryo.serializers.{JavaSerializer => KryoJavaSerializer}
 import com.esotericsoftware.kryo.{KryoException, Kryo}
 import com.esotericsoftware.kryo.io.{Input => KryoInput, Output => KryoOutput}
-import com.twitter.chill.{EmptyScalaKryoInstantiator, AllScalaRegistrar}
+import com.twitter.chill.ScalaKryoInstantiator
 
 import org.apache.spark.{SerializableWritable, Logging}
+import org.apache.spark.storage.{GetBlock, GotBlock, PutBlock, StorageLevel}
+
 import org.apache.spark.broadcast.HttpBroadcast
-import org.apache.spark.scheduler.MapStatus
-import org.apache.spark.storage._
 
 /**
- * A Spark serializer that uses the [[https://code.google.com/p/kryo/ Kryo serialization library]].
+ * A Spark serializer that uses the [[http://code.google.com/p/kryo/wiki/V1Documentation Kryo 1.x library]].
  */
 class KryoSerializer extends org.apache.spark.serializer.Serializer with Logging {
-
-  private val bufferSize = {
-    System.getProperty("spark.kryoserializer.buffer.mb", "2").toInt * 1024 * 1024
-  }
+  private val bufferSize = System.getProperty("spark.kryoserializer.buffer.mb", "2").toInt * 1024 * 1024
 
   def newKryoOutput() = new KryoOutput(bufferSize)
 
+  def newKryoInput() = new KryoInput(bufferSize)
+
   def newKryo(): Kryo = {
-    val instantiator = new EmptyScalaKryoInstantiator
+    val instantiator = new ScalaKryoInstantiator
     val kryo = instantiator.newKryo()
     val classLoader = Thread.currentThread.getContextClassLoader
 
-    // Allow disabling Kryo reference tracking if user knows their object graphs don't have loops.
-    // Do this before we invoke the user registrator so the user registrator can override this.
-    kryo.setReferences(System.getProperty("spark.kryo.referenceTracking", "true").toBoolean)
+    // Register some commonly used classes
+    val toRegister: Seq[AnyRef] = Seq(
+      ByteBuffer.allocate(1),
+      StorageLevel.MEMORY_ONLY,
+      PutBlock("1", ByteBuffer.allocate(1), StorageLevel.MEMORY_ONLY),
+      GotBlock("1", ByteBuffer.allocate(1)),
+      GetBlock("1")
+    )
 
-    for (cls <- KryoSerializer.toRegister) kryo.register(cls)
+    for (obj <- toRegister) kryo.register(obj.getClass)
 
     // Allow sending SerializableWritable
     kryo.register(classOf[SerializableWritable[_]], new KryoJavaSerializer())
@@ -67,11 +71,11 @@ class KryoSerializer extends org.apache.spark.serializer.Serializer with Logging
       case _: Exception => println("Failed to register spark.kryo.registrator")
     }
 
-    // Register Chill's classes; we do this after our ranges and the user's own classes to let
-    // our code override the generic serialziers in Chill for things like Seq
-    new AllScalaRegistrar().apply(kryo)
-
     kryo.setClassLoader(classLoader)
+
+    // Allow disabling Kryo reference tracking if user knows their object graphs don't have loops
+    kryo.setReferences(System.getProperty("spark.kryo.referenceTracking", "true").toBoolean)
+
     kryo
   }
 
@@ -114,10 +118,8 @@ class KryoDeserializationStream(kryo: Kryo, inStream: InputStream) extends Deser
 
 private[spark] class KryoSerializerInstance(ks: KryoSerializer) extends SerializerInstance {
   val kryo = ks.newKryo()
-
-  // Make these lazy vals to avoid creating a buffer unless we use them
-  lazy val output = ks.newKryoOutput()
-  lazy val input = new KryoInput()
+  val output = ks.newKryoOutput()
+  val input = ks.newKryoInput()
 
   def serialize[T](t: T): ByteBuffer = {
     output.clear()
@@ -154,22 +156,4 @@ private[spark] class KryoSerializerInstance(ks: KryoSerializer) extends Serializ
  */
 trait KryoRegistrator {
   def registerClasses(kryo: Kryo)
-}
-
-private[serializer] object KryoSerializer {
-  // Commonly used classes.
-  private val toRegister: Seq[Class[_]] = Seq(
-    ByteBuffer.allocate(1).getClass,
-    classOf[StorageLevel],
-    classOf[PutBlock],
-    classOf[GotBlock],
-    classOf[GetBlock],
-    classOf[MapStatus],
-    classOf[BlockManagerId],
-    classOf[Array[Byte]],
-    (1 to 10).getClass,
-    (1 until 10).getClass,
-    (1L to 10L).getClass,
-    (1L until 10L).getClass
-  )
 }

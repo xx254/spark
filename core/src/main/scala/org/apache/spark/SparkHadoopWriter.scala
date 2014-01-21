@@ -17,13 +17,13 @@
 
 package org.apache.hadoop.mapred
 
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.text.NumberFormat
-import java.util.Date
-
 import org.apache.hadoop.fs.FileSystem
 import org.apache.hadoop.fs.Path
+
+import java.text.SimpleDateFormat
+import java.text.NumberFormat
+import java.io.IOException
+import java.util.Date
 
 import org.apache.spark.Logging
 import org.apache.spark.SerializableWritable
@@ -36,11 +36,7 @@ import org.apache.spark.SerializableWritable
  * Saves the RDD using a JobConf, which should contain an output key class, an output value class,
  * a filename to write to, etc, exactly like in a Hadoop MapReduce job.
  */
-private[apache]
-class SparkHadoopWriter(@transient jobConf: JobConf)
-  extends Logging
-  with SparkHadoopMapRedUtil
-  with Serializable {
+class SparkHadoopWriter(@transient jobConf: JobConf) extends Logging with SparkHadoopMapRedUtil with Serializable {
 
   private val now = new Date()
   private val conf = new SerializableWritable(jobConf)
@@ -87,11 +83,13 @@ class SparkHadoopWriter(@transient jobConf: JobConf)
     }
 
     getOutputCommitter().setupTask(getTaskContext()) 
-    writer = getOutputFormat().getRecordWriter(fs, conf.value, outputName, Reporter.NULL)
+    writer = getOutputFormat().getRecordWriter(
+        fs, conf.value, outputName, Reporter.NULL)
   }
 
   def write(key: AnyRef, value: AnyRef) {
-    if (writer != null) {
+    if (writer!=null) {
+      //println (">>> Writing ("+key.toString+": " + key.getClass.toString + ", " + value.toString + ": " + value.getClass.toString + ")")
       writer.write(key, value)
     } else {
       throw new IOException("Writer is null, open() has not been called")
@@ -181,7 +179,6 @@ class SparkHadoopWriter(@transient jobConf: JobConf)
   }
 }
 
-private[apache]
 object SparkHadoopWriter {
   def createJobID(time: Date, id: Int): JobID = {
     val formatter = new SimpleDateFormat("yyyyMMddHHmm")

@@ -20,16 +20,18 @@ package org.apache.spark.rdd
 import org.apache.spark.{Partition, TaskContext}
 
 
-private[spark] class MapPartitionsRDD[U: ClassManifest, T: ClassManifest](
+private[spark]
+class MapPartitionsRDD[U: ClassManifest, T: ClassManifest](
     prev: RDD[T],
-    f: (TaskContext, Int, Iterator[T]) => Iterator[U],  // (TaskContext, partition index, iterator)
+    f: Iterator[T] => Iterator[U],
     preservesPartitioning: Boolean = false)
   extends RDD[U](prev) {
 
-  override val partitioner = if (preservesPartitioning) firstParent[T].partitioner else None
+  override val partitioner =
+    if (preservesPartitioning) firstParent[T].partitioner else None
 
   override def getPartitions: Array[Partition] = firstParent[T].partitions
 
   override def compute(split: Partition, context: TaskContext) =
-    f(context, split.index, firstParent[T].iterator(split, context))
+    f(firstParent[T].iterator(split, context))
 }
