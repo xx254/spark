@@ -35,7 +35,7 @@ import org.apache.spark.FetchFailed
 import org.apache.spark.ExceptionFailure
 import org.apache.spark.TaskResultTooBigFailure
 import org.apache.spark.util.{SystemClock, Clock}
-
+import java.io._
 
 /**
  * Schedules the tasks within a single TaskSet in the ClusterScheduler. This class keeps track of
@@ -360,6 +360,14 @@ private[spark] class ClusterTaskSetManager(
           // Figure out whether this should count as a preferred launch
           logInfo("Starting task %s:%d as TID %s on executor %s: %s (%s)".format(
             taskSet.id, index, taskId, execId, host, taskLocality))
+         
+          //Peilong 
+          val dumpFile = new FileWriter("test.txt",true)
+          var timestamp = System.currentTimeMillis
+          dumpFile.write(timestamp+"\t"+"Starting Task %s:%d as TID %s on executor %s: %s (%s)\n".format(
+            taskSet.id, index, taskId, execId, host, taskLocality))
+
+
           // Do various bookkeeping
           copiesRunning(index) += 1
           val info = new TaskInfo(taskId, index, curTime, execId, host, taskLocality)
@@ -378,9 +386,21 @@ private[spark] class ClusterTaskSetManager(
           increaseRunningTasks(1)
           logInfo("Serialized task %s:%d as %d bytes in %d ms".format(
             taskSet.id, index, serializedTask.limit, timeTaken))
+         
+          //Peilong 
+          timestamp = System.currentTimeMillis
+          dumpFile.write(timestamp+"\t"+"Serialized task %s:%d as %d bytes in %d ms\n".format(
+            taskSet.id, index, serializedTask.limit, timeTaken))
+
+
+
           val taskName = "task %s:%d".format(taskSet.id, index)
           if (taskAttempts(index).size == 1)
             taskStarted(task,info)
+          
+          //Peilong
+          dumpFile.close()          
+
           return Some(new TaskDescription(taskId, execId, taskName, index, serializedTask))
         }
         case _ =>
@@ -451,6 +471,14 @@ private[spark] class ClusterTaskSetManager(
       tasksFinished += 1
       logInfo("Finished TID %s in %d ms on %s (progress: %d/%d)".format(
         tid, info.duration, info.host, tasksFinished, numTasks))
+      
+      //Peilong
+      val dumpFile = new FileWriter("test.txt",true )
+      var timestamp = System.currentTimeMillis
+      dumpFile.write(timestamp+"\t"+"Finished TID %s in %d ms on %s (progress: %d/%d)\n".format(
+        tid, info.duration, info.host, tasksFinished, numTasks))
+      dumpFile.close()
+
       // Deserialize task result and pass it to the scheduler
       try {
         val result = ser.deserialize[TaskResult[_]](serializedData)
