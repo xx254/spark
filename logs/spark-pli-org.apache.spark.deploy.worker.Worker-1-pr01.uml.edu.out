@@ -1,0 +1,35 @@
+Spark Command: java -cp :/home/pli/spark-0.9.0-incubating/conf:/home/pli/spark-0.9.0-incubating/assembly/target/scala-2.10/spark-assembly-0.9.0-incubating-hadoop1.0.4.jar -Dspark.akka.logLifecycleEvents=true -Djava.library.path= -Xms512m -Xmx512m org.apache.spark.deploy.worker.Worker spark://pr01.uml.edu:7077
+========================================
+
+log4j:WARN No appenders could be found for logger (akka.event.slf4j.Slf4jLogger).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+14/02/09 16:35:34 INFO Worker: Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+14/02/09 16:35:34 INFO Worker: Starting Spark worker pr01.uml.edu:47611 with 4 cores, 2.9 GB RAM
+14/02/09 16:35:34 INFO Worker: Spark home: /home/pli/spark-0.9.0-incubating
+14/02/09 16:35:34 INFO WorkerWebUI: Started Worker web UI at http://pr01.uml.edu:8081
+14/02/09 16:35:34 INFO Worker: Connecting to master spark://pr01.uml.edu:7077...
+14/02/09 16:35:35 INFO Worker: Successfully registered with master spark://pr01.uml.edu:7077
+14/02/09 16:35:54 INFO Worker: Disassociated [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077] Disassociated !
+14/02/09 16:35:54 ERROR Worker: Connection to master failed! Waiting for master to reconnect...
+14/02/09 16:35:54 INFO Worker: Disassociated [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077] Disassociated !
+14/02/09 16:35:54 ERROR Worker: Connection to master failed! Waiting for master to reconnect...
+14/02/09 16:35:54 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkWorker/deadLetters] to Actor[akka://sparkWorker/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40pr01.uml.edu%3A7077-1#-1640033936] was not delivered. [1] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/09 16:35:54 INFO Worker: Disassociated [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077] Disassociated !
+14/02/09 16:35:54 ERROR Worker: Connection to master failed! Waiting for master to reconnect...
+14/02/09 16:35:54 ERROR EndpointWriter: AssociationError [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077]: Error [Association failed with [akka.tcp://sparkMaster@pr01.uml.edu:7077]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://sparkMaster@pr01.uml.edu:7077]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:7077
+]
+14/02/09 16:35:54 ERROR EndpointWriter: AssociationError [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077]: Error [Association failed with [akka.tcp://sparkMaster@pr01.uml.edu:7077]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://sparkMaster@pr01.uml.edu:7077]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:7077
+]
+14/02/09 16:35:54 INFO Worker: Disassociated [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077] Disassociated !
+14/02/09 16:35:54 ERROR Worker: Connection to master failed! Waiting for master to reconnect...
+14/02/09 16:35:54 ERROR EndpointWriter: AssociationError [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077]: Error [Association failed with [akka.tcp://sparkMaster@pr01.uml.edu:7077]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://sparkMaster@pr01.uml.edu:7077]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:7077
+]
+14/02/09 16:35:54 INFO Worker: Disassociated [akka.tcp://sparkWorker@pr01.uml.edu:47611] -> [akka.tcp://sparkMaster@pr01.uml.edu:7077] Disassociated !
+14/02/09 16:35:54 ERROR Worker: Connection to master failed! Waiting for master to reconnect...

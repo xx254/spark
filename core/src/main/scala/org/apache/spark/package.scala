@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+package org.apache
+
 /**
  * Core Spark functionality. [[org.apache.spark.SparkContext]] serves as the main entry point to
  * Spark, while [[org.apache.spark.rdd.RDD]] is the data type representing a distributed collection,
@@ -27,6 +29,9 @@
  * be saved as SequenceFiles. These operations are automatically available on any RDD of the right
  * type (e.g. RDD[(Int, Int)] through implicit conversions when you
  * `import org.apache.spark.SparkContext._`.
+ *
+ * Java programmers should reference the [[spark.api.java]] package
+ * for Spark programming APIs in Java.
  */
 package object spark {
   // For package docs only

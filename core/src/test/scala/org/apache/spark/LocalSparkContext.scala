@@ -30,7 +30,7 @@ trait LocalSparkContext extends BeforeAndAfterEach with BeforeAndAfterAll { self
   @transient var sc: SparkContext = _
 
   override def beforeAll() {
-    InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory());
+    InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory())
     super.beforeAll()
   }
 
@@ -40,20 +40,19 @@ trait LocalSparkContext extends BeforeAndAfterEach with BeforeAndAfterAll { self
   }
 
   def resetSparkContext() = {
-    if (sc != null) {
-      LocalSparkContext.stop(sc)
-      sc = null
-    }
+    LocalSparkContext.stop(sc)
+    sc = null
   }
 
 }
 
 object LocalSparkContext {
   def stop(sc: SparkContext) {
-    sc.stop()
+    if (sc != null) {
+      sc.stop()
+    }
     // To avoid Akka rebinding to the same port, since it doesn't unbind immediately on shutdown
     System.clearProperty("spark.driver.port")
-    System.clearProperty("spark.hostPort")
   }
 
   /** Runs `f` by passing in `sc` and ensures that `sc` is stopped. */

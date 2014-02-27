@@ -26,10 +26,14 @@ class UISuite extends FunSuite {
   test("jetty port increases under contention") {
     val startPort = 4040
     val server = new Server(startPort)
-    server.start()
+
+    Try { server.start() } match {
+      case Success(s) => 
+      case Failure(e) => 
+      // Either case server port is busy hence setup for test complete
+    }
     val (jettyServer1, boundPort1) = JettyUtils.startJettyServer("localhost", startPort, Seq())
     val (jettyServer2, boundPort2) = JettyUtils.startJettyServer("localhost", startPort, Seq())
-
     // Allow some wiggle room in case ports on the machine are under contention
     assert(boundPort1 > startPort && boundPort1 < startPort + 10)
     assert(boundPort2 > boundPort1 && boundPort2 < boundPort1 + 10)

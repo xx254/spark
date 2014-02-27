@@ -1,0 +1,218 @@
+Spark Command: java -cp :/home/pli/spark-0.9.0-incubating/conf:/home/pli/spark-0.9.0-incubating/assembly/target/scala-2.10/spark-assembly-0.9.0-incubating-hadoop1.0.4.jar -Dspark.akka.logLifecycleEvents=true -Djava.library.path= -Xms1g -Xmx1g org.apache.spark.deploy.master.Master --ip pr01.uml.edu --port 7077 --webui-port 8080
+========================================
+
+14/02/10 08:47:04 INFO Slf4jLogger: Slf4jLogger started
+14/02/10 08:47:04 INFO Remoting: Starting remoting
+14/02/10 08:47:04 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkMaster@pr01.uml.edu:7077]
+14/02/10 08:47:05 INFO Master: Starting Spark master at spark://pr01.uml.edu:7077
+14/02/10 08:47:05 INFO MasterWebUI: Started Master web UI at http://pr01.uml.edu:8080
+14/02/10 08:47:05 INFO Master: I have been elected leader! New state: ALIVE
+14/02/10 08:47:06 INFO Master: Registering worker pr01.uml.edu:56472 with 2 cores, 908.0 MB RAM
+14/02/10 08:47:07 INFO Master: Registering worker pr01.uml.edu:43960 with 2 cores, 942.0 MB RAM
+14/02/10 09:44:12 INFO Master: Registering app SparkPi
+14/02/10 09:44:12 INFO Master: Registered app SparkPi with ID app-20140210094412-0000
+14/02/10 09:44:12 INFO Master: Launching executor app-20140210094412-0000/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 09:44:12 INFO Master: Launching executor app-20140210094412-0000/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 09:44:41 INFO Master: Removing executor app-20140210094412-0000/0 because it is FAILED
+14/02/10 09:44:41 INFO Master: Launching executor app-20140210094412-0000/2 on worker worker-20140210084646-plilab.local-43960
+14/02/10 09:44:41 INFO Master: Removing executor app-20140210094412-0000/1 because it is FAILED
+14/02/10 09:44:41 INFO Master: Launching executor app-20140210094412-0000/3 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 09:44:41 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59295-3#244512772] was not delivered. [1] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 09:44:41 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59295-3#244512772] was not delivered. [2] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 09:44:41 INFO Master: akka.tcp://spark@pr01.uml.edu:36209 got disassociated, removing it.
+14/02/10 09:44:41 INFO Master: Removing app app-20140210094412-0000
+14/02/10 09:44:41 WARN Master: Got status update for unknown executor app-20140210094412-0000/3
+14/02/10 09:44:41 WARN Master: Got status update for unknown executor app-20140210094412-0000/2
+14/02/10 09:57:38 INFO Master: Registering app SparkPi
+14/02/10 09:57:38 INFO Master: Registered app SparkPi with ID app-20140210095738-0001
+14/02/10 09:57:38 INFO Master: Launching executor app-20140210095738-0001/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 09:57:38 INFO Master: Launching executor app-20140210095738-0001/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 09:58:03 INFO Master: Removing executor app-20140210095738-0001/0 because it is FAILED
+14/02/10 09:58:03 INFO Master: Launching executor app-20140210095738-0001/2 on worker worker-20140210084646-plilab.local-43960
+14/02/10 09:58:03 INFO Master: Removing executor app-20140210095738-0001/1 because it is FAILED
+14/02/10 09:58:03 INFO Master: Launching executor app-20140210095738-0001/3 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 09:58:04 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59353-4#852220094] was not delivered. [3] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 09:58:04 INFO Master: akka.tcp://spark@pr01.uml.edu:59826 got disassociated, removing it.
+14/02/10 09:58:04 INFO Master: Removing app app-20140210095738-0001
+14/02/10 09:58:04 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59353-4#852220094] was not delivered. [4] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 09:58:04 WARN Master: Got status update for unknown executor app-20140210095738-0001/2
+14/02/10 09:58:04 WARN Master: Got status update for unknown executor app-20140210095738-0001/3
+14/02/10 10:47:55 INFO Master: Registering app SparkPi
+14/02/10 10:47:55 INFO Master: Registered app SparkPi with ID app-20140210104755-0002
+14/02/10 10:47:55 INFO Master: Launching executor app-20140210104755-0002/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 10:47:55 INFO Master: Launching executor app-20140210104755-0002/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 10:48:20 INFO Master: akka.tcp://spark@pr01.uml.edu:48263 got disassociated, removing it.
+14/02/10 10:48:20 INFO Master: Removing app app-20140210104755-0002
+14/02/10 10:48:20 INFO Master: akka.tcp://spark@pr01.uml.edu:48263 got disassociated, removing it.
+14/02/10 10:48:20 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59553-5#-603565895] was not delivered. [5] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 10:48:21 WARN Master: Got status update for unknown executor app-20140210104755-0002/0
+14/02/10 10:48:21 WARN Master: Got status update for unknown executor app-20140210104755-0002/1
+14/02/10 10:48:21 INFO Master: akka.tcp://spark@pr01.uml.edu:48263 got disassociated, removing it.
+14/02/10 10:48:21 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:48263]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:48263]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:48263]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:48263
+]
+14/02/10 10:48:21 INFO Master: akka.tcp://spark@pr01.uml.edu:48263 got disassociated, removing it.
+14/02/10 10:48:21 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:48263]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:48263]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:48263]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:48263
+]
+14/02/10 10:48:21 INFO Master: akka.tcp://spark@pr01.uml.edu:48263 got disassociated, removing it.
+14/02/10 10:48:21 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:48263]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:48263]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:48263]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:48263
+]
+14/02/10 10:56:55 INFO Master: Registering app SparkPi
+14/02/10 10:56:55 INFO Master: Registered app SparkPi with ID app-20140210105655-0003
+14/02/10 10:56:55 INFO Master: Launching executor app-20140210105655-0003/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 10:56:55 INFO Master: Launching executor app-20140210105655-0003/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 10:57:20 INFO Master: akka.tcp://spark@pr01.uml.edu:46415 got disassociated, removing it.
+14/02/10 10:57:20 INFO Master: Removing app app-20140210105655-0003
+14/02/10 10:57:20 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59589-9#2119296309] was not delivered. [6] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 10:57:20 INFO Master: akka.tcp://spark@pr01.uml.edu:46415 got disassociated, removing it.
+14/02/10 10:57:20 INFO Master: akka.tcp://spark@pr01.uml.edu:46415 got disassociated, removing it.
+14/02/10 10:57:20 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:46415]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:46415]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:46415]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:46415
+]
+14/02/10 10:57:20 INFO Master: akka.tcp://spark@pr01.uml.edu:46415 got disassociated, removing it.
+14/02/10 10:57:20 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:46415]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:46415]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:46415]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:46415
+]
+14/02/10 10:57:20 INFO Master: akka.tcp://spark@pr01.uml.edu:46415 got disassociated, removing it.
+14/02/10 10:57:20 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:46415]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:46415]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:46415]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:46415
+]
+14/02/10 10:57:21 WARN Master: Got status update for unknown executor app-20140210105655-0003/1
+14/02/10 10:57:21 WARN Master: Got status update for unknown executor app-20140210105655-0003/0
+14/02/10 11:08:25 INFO Master: Registering app SparkPi
+14/02/10 11:08:25 INFO Master: Registered app SparkPi with ID app-20140210110825-0004
+14/02/10 11:08:25 INFO Master: Launching executor app-20140210110825-0004/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 11:08:25 INFO Master: Launching executor app-20140210110825-0004/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 11:08:50 INFO Master: akka.tcp://spark@pr01.uml.edu:37079 got disassociated, removing it.
+14/02/10 11:08:50 INFO Master: Removing app app-20140210110825-0004
+14/02/10 11:08:50 INFO Master: akka.tcp://spark@pr01.uml.edu:37079 got disassociated, removing it.
+14/02/10 11:08:50 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59635-13#1625738433] was not delivered. [7] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 11:08:50 INFO Master: akka.tcp://spark@pr01.uml.edu:37079 got disassociated, removing it.
+14/02/10 11:08:50 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:37079]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:37079]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:37079]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:37079
+]
+14/02/10 11:08:50 INFO Master: akka.tcp://spark@pr01.uml.edu:37079 got disassociated, removing it.
+14/02/10 11:08:50 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:37079]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:37079]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:37079]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:37079
+]
+14/02/10 11:08:50 INFO Master: akka.tcp://spark@pr01.uml.edu:37079 got disassociated, removing it.
+14/02/10 11:08:50 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:37079]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:37079]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:37079]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:37079
+]
+14/02/10 11:08:51 WARN Master: Got status update for unknown executor app-20140210110825-0004/0
+14/02/10 11:08:51 WARN Master: Got status update for unknown executor app-20140210110825-0004/1
+14/02/10 11:24:06 INFO Master: Registering app SparkPi
+14/02/10 11:24:06 INFO Master: Registered app SparkPi with ID app-20140210112406-0005
+14/02/10 11:24:06 INFO Master: Launching executor app-20140210112406-0005/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 11:24:06 INFO Master: Launching executor app-20140210112406-0005/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 11:24:31 INFO Master: akka.tcp://spark@pr01.uml.edu:41652 got disassociated, removing it.
+14/02/10 11:24:31 INFO Master: Removing app app-20140210112406-0005
+14/02/10 11:24:31 INFO Master: akka.tcp://spark@pr01.uml.edu:41652 got disassociated, removing it.
+14/02/10 11:24:31 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59696-17#-585981621] was not delivered. [8] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 11:24:31 INFO Master: akka.tcp://spark@pr01.uml.edu:41652 got disassociated, removing it.
+14/02/10 11:24:31 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:41652]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:41652]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:41652]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:41652
+]
+14/02/10 11:24:31 INFO Master: akka.tcp://spark@pr01.uml.edu:41652 got disassociated, removing it.
+14/02/10 11:24:31 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:41652]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:41652]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:41652]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:41652
+]
+14/02/10 11:24:31 INFO Master: akka.tcp://spark@pr01.uml.edu:41652 got disassociated, removing it.
+14/02/10 11:24:31 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:41652]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:41652]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:41652]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:41652
+]
+14/02/10 11:24:32 WARN Master: Got status update for unknown executor app-20140210112406-0005/0
+14/02/10 11:24:32 WARN Master: Got status update for unknown executor app-20140210112406-0005/1
+14/02/10 11:33:39 INFO Master: Registering app SparkPi
+14/02/10 11:33:39 INFO Master: Registered app SparkPi with ID app-20140210113339-0006
+14/02/10 11:33:39 INFO Master: Launching executor app-20140210113339-0006/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 11:33:39 INFO Master: Launching executor app-20140210113339-0006/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 11:34:06 INFO Master: Removing executor app-20140210113339-0006/0 because it is FAILED
+14/02/10 11:34:06 INFO Master: Launching executor app-20140210113339-0006/2 on worker worker-20140210084646-plilab.local-43960
+14/02/10 11:34:06 INFO Master: Removing executor app-20140210113339-0006/1 because it is FAILED
+14/02/10 11:34:06 INFO Master: Launching executor app-20140210113339-0006/3 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 11:34:07 INFO Master: akka.tcp://spark@pr01.uml.edu:58224 got disassociated, removing it.
+14/02/10 11:34:07 INFO Master: Removing app app-20140210113339-0006
+14/02/10 11:34:07 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59734-21#1559871738] was not delivered. [9] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 11:34:07 WARN Master: Got status update for unknown executor app-20140210113339-0006/2
+14/02/10 11:34:07 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59734-21#1559871738] was not delivered. [10] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 11:34:07 WARN Master: Got status update for unknown executor app-20140210113339-0006/3
+14/02/10 13:06:56 INFO Master: Registering app SparkPi
+14/02/10 13:06:56 INFO Master: Registered app SparkPi with ID app-20140210130656-0007
+14/02/10 13:06:56 INFO Master: Launching executor app-20140210130656-0007/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 13:06:56 INFO Master: Launching executor app-20140210130656-0007/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 13:07:40 INFO Master: Removing executor app-20140210130656-0007/0 because it is FAILED
+14/02/10 13:07:40 INFO Master: Launching executor app-20140210130656-0007/2 on worker worker-20140210084646-plilab.local-43960
+14/02/10 13:07:40 INFO Master: akka.tcp://spark@pr01.uml.edu:37836 got disassociated, removing it.
+14/02/10 13:07:40 INFO Master: Removing app app-20140210130656-0007
+14/02/10 13:07:40 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A60082-22#-840491600] was not delivered. [11] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 13:07:40 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A60082-22#-840491600] was not delivered. [12] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 13:07:40 WARN Master: Got status update for unknown executor app-20140210130656-0007/2
+14/02/10 13:07:40 WARN Master: Got status update for unknown executor app-20140210130656-0007/1
+14/02/10 14:05:03 INFO Master: Registering app SparkPi
+14/02/10 14:05:03 INFO Master: Registered app SparkPi with ID app-20140210140503-0008
+14/02/10 14:05:03 INFO Master: Launching executor app-20140210140503-0008/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 14:05:03 INFO Master: Launching executor app-20140210140503-0008/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 14:05:46 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A60300-23#61817181] was not delivered. [13] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 14:05:46 INFO Master: akka.tcp://spark@pr01.uml.edu:36464 got disassociated, removing it.
+14/02/10 14:05:46 INFO Master: Removing app app-20140210140503-0008
+14/02/10 14:05:46 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A60300-23#61817181] was not delivered. [14] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 14:05:46 WARN Master: Got status update for unknown executor app-20140210140503-0008/0
+14/02/10 14:05:48 WARN Master: Got status update for unknown executor app-20140210140503-0008/1
+14/02/10 21:12:50 INFO Master: Registering app SparkPi
+14/02/10 21:12:50 INFO Master: Registered app SparkPi with ID app-20140210211250-0009
+14/02/10 21:12:50 INFO Master: Launching executor app-20140210211250-0009/0 on worker worker-20140210084646-plilab.local-43960
+14/02/10 21:12:50 INFO Master: Launching executor app-20140210211250-0009/1 on worker worker-20140210084658-plilab2.local-56472
+14/02/10 21:13:31 INFO Master: Removing executor app-20140210211250-0009/0 because it is FAILED
+14/02/10 21:13:31 INFO Master: Launching executor app-20140210211250-0009/2 on worker worker-20140210084646-plilab.local-43960
+14/02/10 21:13:32 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A42817-24#-2106400985] was not delivered. [15] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 21:13:32 INFO Master: akka.tcp://spark@pr01.uml.edu:55298 got disassociated, removing it.
+14/02/10 21:13:32 INFO Master: Removing app app-20140210211250-0009
+14/02/10 21:13:32 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A42817-24#-2106400985] was not delivered. [16] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/10 21:13:32 WARN Master: Got status update for unknown executor app-20140210211250-0009/2
+14/02/10 21:13:32 WARN Master: Got status update for unknown executor app-20140210211250-0009/1
+14/02/11 14:04:05 WARN Master: Removing worker-20140210084658-plilab2.local-56472 because we got no heartbeat in 60 seconds
+14/02/11 14:04:05 INFO Master: Removing worker worker-20140210084658-plilab2.local-56472 on plilab2.local:56472
+14/02/11 14:29:11 INFO Master: akka.tcp://sparkWorker@plilab2.local:56472 got disassociated, removing it.
+14/02/11 14:29:11 INFO LocalActorRef: Message [akka.remote.transport.AssociationHandle$Disassociated] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.57%3A57117-1#430446998] was not delivered. [17] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/11 14:29:11 INFO Master: akka.tcp://sparkWorker@plilab2.local:56472 got disassociated, removing it.
+14/02/11 14:29:11 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.57%3A57117-1#430446998] was not delivered. [18] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/11 14:29:16 INFO Master: akka.tcp://sparkWorker@plilab2.local:56472 got disassociated, removing it.
+14/02/11 14:29:16 WARN Remoting: Tried to associate with unreachable remote address [akka.tcp://sparkWorker@plilab2.local:56472]. Address is now gated for 60000 ms, all messages to this address will be delivered to dead letters.
+14/02/12 09:16:12 INFO Master: Registering app SparkPi
+14/02/12 09:16:12 INFO Master: Registered app SparkPi with ID app-20140212091612-0010
+14/02/12 09:16:12 INFO Master: Launching executor app-20140212091612-0010/0 on worker worker-20140210084646-plilab.local-43960
+14/02/12 09:16:53 INFO Master: akka.tcp://spark@pr01.uml.edu:35867 got disassociated, removing it.
+14/02/12 09:16:53 INFO Master: Removing app app-20140212091612-0010
+14/02/12 09:16:53 INFO Master: akka.tcp://spark@pr01.uml.edu:35867 got disassociated, removing it.
+14/02/12 09:16:53 INFO LocalActorRef: Message [akka.remote.transport.ActorTransportAdapter$DisassociateUnderlying] from Actor[akka://sparkMaster/deadLetters] to Actor[akka://sparkMaster/system/transports/akkaprotocolmanager.tcp0/akkaProtocol-tcp%3A%2F%2FsparkMaster%40129.63.205.172%3A59161-26#-519314926] was not delivered. [19] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+14/02/12 09:16:53 INFO Master: akka.tcp://spark@pr01.uml.edu:35867 got disassociated, removing it.
+14/02/12 09:16:53 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:35867]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:35867]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:35867]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:35867
+]
+14/02/12 09:16:53 INFO Master: akka.tcp://spark@pr01.uml.edu:35867 got disassociated, removing it.
+14/02/12 09:16:53 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:35867]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:35867]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:35867]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:35867
+]
+14/02/12 09:16:53 INFO Master: akka.tcp://spark@pr01.uml.edu:35867 got disassociated, removing it.
+14/02/12 09:16:53 ERROR EndpointWriter: AssociationError [akka.tcp://sparkMaster@pr01.uml.edu:7077] -> [akka.tcp://spark@pr01.uml.edu:35867]: Error [Association failed with [akka.tcp://spark@pr01.uml.edu:35867]] [
+akka.remote.EndpointAssociationException: Association failed with [akka.tcp://spark@pr01.uml.edu:35867]
+Caused by: akka.remote.transport.netty.NettyTransport$$anonfun$associate$1$$anon$2: Connection refused: pr01.uml.edu/129.63.205.172:35867
+]
+14/02/12 09:16:55 WARN Master: Got status update for unknown executor app-20140212091612-0010/0

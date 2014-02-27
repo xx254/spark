@@ -1,0 +1,36 @@
+1393341978522	Starting TID 0 on plilab2.local
+1393341978542	Starting TID 1 on plilab2.local
+1393341994574	Finished TID 1 on plilab2.local
+1393341974579	1393341989414	Deserialization of TID 1: 14835 ms on plilab2.local
+1393341989414	1393341989836	Execution of TID 1: 422 ms on plilab2.local
+19	19	Garbage Collection of TID 1: 0 ms on plilab2.local
+1393341989836	1393341989838	Serialization of TID 1: 2 ms on plilab2.local
+1393341994581	Finished TID 0 on plilab2.local
+1393341974579	1393341989418	Deserialization of TID 0: 14839 ms on plilab2.local
+1393341989418	1393341989836	Execution of TID 0: 418 ms on plilab2.local
+19	19	Garbage Collection of TID 0: 0 ms on plilab2.local
+1393341989836	1393341989838	Serialization of TID 0: 2 ms on plilab2.local
+1393341994686	Starting TID 2 on plilab2.local
+1393341994690	Starting TID 3 on plilab2.local
+1393341995189	Finished TID 2 on plilab2.local
+1393341990006	1393341990019	Deserialization of TID 2: 13 ms on plilab2.local
+1393341990019	1393341990474	Execution of TID 2: 455 ms on plilab2.local
+19	19	Garbage Collection of TID 2: 0 ms on plilab2.local
+1393341990474	1393341990475	Serialization of TID 2: 1 ms on plilab2.local
+1393341995220	Finished TID 3 on plilab2.local
+1393341990007	1393341990022	Deserialization of TID 3: 15 ms on plilab2.local
+1393341990022	1393341990512	Execution of TID 3: 490 ms on plilab2.local
+19	19	Garbage Collection of TID 3: 0 ms on plilab2.local
+1393341990512	1393341990512	Serialization of TID 3: 0 ms on plilab2.local
+1393341995276	Starting TID 4 on plilab2.local
+1393341995280	Starting TID 5 on plilab.local
+1393341995995	Finished TID 4 on plilab2.local
+1393341990599	1393341990748	Deserialization of TID 4: 149 ms on plilab2.local
+1393341990748	1393341991284	Execution of TID 4: 536 ms on plilab2.local
+19	19	Garbage Collection of TID 4: 0 ms on plilab2.local
+1393341991284	1393341991284	Serialization of TID 4: 0 ms on plilab2.local
+1393342010509	Finished TID 5 on plilab.local
+1393341990190	1393342004058	Deserialization of TID 5: 13868 ms on plilab.local
+1393342004058	1393342005137	Execution of TID 5: 1079 ms on plilab.local
+29	29	Garbage Collection of TID 5: 0 ms on plilab.local
+1393342005137	1393342005138	Serialization of TID 5: 1 ms on plilab.local

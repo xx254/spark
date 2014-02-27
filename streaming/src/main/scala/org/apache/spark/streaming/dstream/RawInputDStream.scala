@@ -18,8 +18,10 @@
 package org.apache.spark.streaming.dstream
 
 import org.apache.spark.Logging
-import org.apache.spark.storage.StorageLevel
+import org.apache.spark.storage.{StorageLevel, StreamBlockId}
 import org.apache.spark.streaming.StreamingContext
+
+import scala.reflect.ClassTag
 
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -35,7 +37,7 @@ import java.util.concurrent.ArrayBlockingQueue
  * in the format that the system is configured with.
  */
 private[streaming]
-class RawInputDStream[T: ClassManifest](
+class RawInputDStream[T: ClassTag](
     @transient ssc_ : StreamingContext,
     host: String,
     port: Int,
@@ -71,7 +73,7 @@ class RawNetworkReceiver(host: String, port: Int, storageLevel: StorageLevel)
         var nextBlockNumber = 0
         while (true) {
           val buffer = queue.take()
-          val blockId = "input-" + streamId + "-" + nextBlockNumber
+          val blockId = StreamBlockId(streamId, nextBlockNumber)
           nextBlockNumber += 1
           pushBlock(blockId, buffer, null, storageLevel)
         }

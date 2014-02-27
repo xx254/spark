@@ -17,23 +17,25 @@
 
 package org.apache.spark.storage
 
-import akka.actor.ActorRef
-import akka.dispatch.{Await, Future}
+import scala.concurrent.{Await, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
+
+import akka.actor._
 import akka.pattern.ask
-import akka.util.Duration
 
-import org.apache.spark.{Logging, SparkException}
+import org.apache.spark.{SparkConf, Logging, SparkException}
 import org.apache.spark.storage.BlockManagerMessages._
+import org.apache.spark.util.AkkaUtils
 
+private[spark]
+class BlockManagerMaster(var driverActor : ActorRef, conf: SparkConf) extends Logging {
 
-private[spark] class BlockManagerMaster(var driverActor: ActorRef) extends Logging {
-
-  val AKKA_RETRY_ATTEMPTS: Int = System.getProperty("spark.akka.num.retries", "3").toInt
-  val AKKA_RETRY_INTERVAL_MS: Int = System.getProperty("spark.akka.retry.wait", "3000").toInt
+  val AKKA_RETRY_ATTEMPTS: Int = conf.getInt("spark.akka.num.retries", 3)
+  val AKKA_RETRY_INTERVAL_MS: Int = conf.getInt("spark.akka.retry.wait", 3000)
 
   val DRIVER_AKKA_ACTOR_NAME = "BlockManagerMaster"
 
-  val timeout = Duration.create(System.getProperty("spark.akka.askTimeout", "10").toLong, "seconds")
+  val timeout = AkkaUtils.askTimeout(conf)
 
   /** Remove a dead executor from the driver actor. This is only called on the driver side. */
   def removeExecutor(execId: String) {
@@ -60,7 +62,7 @@ private[spark] class BlockManagerMaster(var driverActor: ActorRef) extends Loggi
 
   def updateBlockInfo(
       blockManagerId: BlockManagerId,
-      blockId: String,
+      blockId: BlockId,
       storageLevel: StorageLevel,
       memSize: Long,
       diskSize: Long): Boolean = {
@@ -71,12 +73,12 @@ private[spark] class BlockManagerMaster(var driverActor: ActorRef) extends Loggi
   }
 
   /** Get locations of the blockId from the driver */
-  def getLocations(blockId: String): Seq[BlockManagerId] = {
+  def getLocations(blockId: BlockId): Seq[BlockManagerId] = {
     askDriverWithReply[Seq[BlockManagerId]](GetLocations(blockId))
   }
 
   /** Get locations of multiple blockIds from the driver */
-  def getLocations(blockIds: Array[String]): Seq[Seq[BlockManagerId]] = {
+  def getLocations(blockIds: Array[BlockId]): Seq[Seq[BlockManagerId]] = {
     askDriverWithReply[Seq[Seq[BlockManagerId]]](GetLocationsMultipleBlockIds(blockIds))
   }
 
@@ -94,7 +96,7 @@ private[spark] class BlockManagerMaster(var driverActor: ActorRef) extends Loggi
    * Remove a block from the slaves that have it. This can only be used to remove
    * blocks that the driver knows about.
    */
-  def removeBlock(blockId: String) {
+  def removeBlock(blockId: BlockId) {
     askDriverWithReply(RemoveBlock(blockId))
   }
 

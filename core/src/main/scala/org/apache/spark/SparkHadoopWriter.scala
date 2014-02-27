@@ -17,13 +17,13 @@
 
 package org.apache.hadoop.mapred
 
-import org.apache.hadoop.fs.FileSystem
-import org.apache.hadoop.fs.Path
-
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.text.NumberFormat
-import java.io.IOException
 import java.util.Date
+
+import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.fs.Path
 
 import org.apache.spark.Logging
 import org.apache.spark.SerializableWritable
@@ -36,7 +36,11 @@ import org.apache.spark.SerializableWritable
  * Saves the RDD using a JobConf, which should contain an output key class, an output value class,
  * a filename to write to, etc, exactly like in a Hadoop MapReduce job.
  */
-class SparkHadoopWriter(@transient jobConf: JobConf) extends Logging with SparkHadoopMapRedUtil with Serializable {
+private[apache]
+class SparkHadoopWriter(@transient jobConf: JobConf)
+  extends Logging
+  with SparkHadoopMapRedUtil
+  with Serializable {
 
   private val now = new Date()
   private val conf = new SerializableWritable(jobConf)
@@ -83,13 +87,11 @@ class SparkHadoopWriter(@transient jobConf: JobConf) extends Logging with SparkH
     }
 
     getOutputCommitter().setupTask(getTaskContext()) 
-    writer = getOutputFormat().getRecordWriter(
-        fs, conf.value, outputName, Reporter.NULL)
+    writer = getOutputFormat().getRecordWriter(fs, conf.value, outputName, Reporter.NULL)
   }
 
   def write(key: AnyRef, value: AnyRef) {
-    if (writer!=null) {
-      //println (">>> Writing ("+key.toString+": " + key.getClass.toString + ", " + value.toString + ": " + value.getClass.toString + ")")
+    if (writer != null) {
       writer.write(key, value)
     } else {
       throw new IOException("Writer is null, open() has not been called")
@@ -125,10 +127,6 @@ class SparkHadoopWriter(@transient jobConf: JobConf) extends Logging with SparkH
     cmtr.commitJob(getJobContext())
   }
 
-  def cleanup() {
-    getOutputCommitter().cleanupJob(getJobContext())
-  }
-
   // ********* Private Functions *********
 
   private def getOutputFormat(): OutputFormat[AnyRef,AnyRef] = {
@@ -136,28 +134,28 @@ class SparkHadoopWriter(@transient jobConf: JobConf) extends Logging with SparkH
       format = conf.value.getOutputFormat()
         .asInstanceOf[OutputFormat[AnyRef,AnyRef]]
     }
-    return format 
+    format
   }
 
   private def getOutputCommitter(): OutputCommitter = {
     if (committer == null) {
       committer = conf.value.getOutputCommitter
     }
-    return committer
+    committer
   }
 
   private def getJobContext(): JobContext = {
     if (jobContext == null) { 
       jobContext = newJobContext(conf.value, jID.value)
     }
-    return jobContext
+    jobContext
   }
 
   private def getTaskContext(): TaskAttemptContext = {
     if (taskContext == null) {
       taskContext =  newTaskAttemptContext(conf.value, taID.value)
     }
-    return taskContext
+    taskContext
   }
 
   private def setIDs(jobid: Int, splitid: Int, attemptid: Int) {
@@ -179,23 +177,23 @@ class SparkHadoopWriter(@transient jobConf: JobConf) extends Logging with SparkH
   }
 }
 
+private[apache]
 object SparkHadoopWriter {
   def createJobID(time: Date, id: Int): JobID = {
     val formatter = new SimpleDateFormat("yyyyMMddHHmm")
     val jobtrackerID = formatter.format(new Date())
-    return new JobID(jobtrackerID, id)
+    new JobID(jobtrackerID, id)
   }
   
   def createPathFromString(path: String, conf: JobConf): Path = {
     if (path == null) {
       throw new IllegalArgumentException("Output path is null")
     }
-    var outputPath = new Path(path)
+    val outputPath = new Path(path)
     val fs = outputPath.getFileSystem(conf)
     if (outputPath == null || fs == null) {
       throw new IllegalArgumentException("Incorrectly formatted output path")
     }
-    outputPath = outputPath.makeQualified(fs)
-    return outputPath
+    outputPath.makeQualified(fs)
   }
 }

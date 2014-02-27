@@ -34,16 +34,19 @@ object ALSSuite {
       users: Int,
       products: Int,
       features: Int,
-      samplingRate: Double): (java.util.List[Rating], DoubleMatrix) = {
-    val (sampledRatings, trueRatings) = generateRatings(users, products, features, samplingRate)
-    (seqAsJavaList(sampledRatings), trueRatings)
+      samplingRate: Double,
+      implicitPrefs: Boolean): (java.util.List[Rating], DoubleMatrix, DoubleMatrix) = {
+    val (sampledRatings, trueRatings, truePrefs) =
+      generateRatings(users, products, features, samplingRate, implicitPrefs)
+    (seqAsJavaList(sampledRatings), trueRatings, truePrefs)
   }
 
   def generateRatings(
       users: Int,
       products: Int,
       features: Int,
-      samplingRate: Double): (Seq[Rating], DoubleMatrix) = {
+      samplingRate: Double,
+      implicitPrefs: Boolean = false): (Seq[Rating], DoubleMatrix, DoubleMatrix) = {
     val rand = new Random(42)
 
     // Create a random matrix with uniform values from -1 to 1
@@ -52,14 +55,20 @@ object ALSSuite {
 
     val userMatrix = randomMatrix(users, features)
     val productMatrix = randomMatrix(features, products)
-    val trueRatings = userMatrix.mmul(productMatrix)
+    val (trueRatings, truePrefs) = implicitPrefs match {
+      case true =>
+        val raw = new DoubleMatrix(users, products, Array.fill(users * products)(rand.nextInt(10).toDouble): _*)
+        val prefs = new DoubleMatrix(users, products, raw.data.map(v => if (v > 0) 1.0 else 0.0): _*)
+        (raw, prefs)
+      case false => (userMatrix.mmul(productMatrix), null)
+    }
 
     val sampledRatings = {
       for (u <- 0 until users; p <- 0 until products if rand.nextDouble() < samplingRate)
         yield Rating(u, p, trueRatings.get(u, p))
     }
 
-    (sampledRatings, trueRatings)
+    (sampledRatings, trueRatings, truePrefs)
   }
 
 }
@@ -78,11 +87,35 @@ class ALSSuite extends FunSuite with BeforeAndAfterAll {
   }
 
   test("rank-1 matrices") {
-    testALS(10, 20, 1, 15, 0.7, 0.3)
+    testALS(50, 100, 1, 15, 0.7, 0.3)
+  }
+
+  test("rank-1 matrices bulk") {
+    testALS(50, 100, 1, 15, 0.7, 0.3, false, true)
   }
 
   test("rank-2 matrices") {
-    testALS(20, 30, 2, 15, 0.7, 0.3)
+    testALS(100, 200, 2, 15, 0.7, 0.3)
+  }
+
+  test("rank-2 matrices bulk") {
+    testALS(100, 200, 2, 15, 0.7, 0.3, false, true)
+  }
+
+  test("rank-1 matrices implicit") {
+    testALS(80, 160, 1, 15, 0.7, 0.4, true)
+  }
+
+  test("rank-1 matrices implicit bulk") {
+    testALS(80, 160, 1, 15, 0.7, 0.4, true, true)
+  }
+
+  test("rank-2 matrices implicit") {
+    testALS(100, 200, 2, 15, 0.7, 0.4, true)
+  }
+
+  test("rank-2 matrices implicit bulk") {
+    testALS(100, 200, 2, 15, 0.7, 0.4, true, true)
   }
 
   /**
@@ -94,13 +127,19 @@ class ALSSuite extends FunSuite with BeforeAndAfterAll {
    * @param iterations     number of iterations to run
    * @param samplingRate   what fraction of the user-product pairs are known
    * @param matchThreshold max difference allowed to consider a predicted rating correct
+   * @param implicitPrefs  flag to test implicit feedback
+   * @param bulkPredict    flag to test bulk prediciton
    */
   def testALS(users: Int, products: Int, features: Int, iterations: Int,
-    samplingRate: Double, matchThreshold: Double)
+    samplingRate: Double, matchThreshold: Double, implicitPrefs: Boolean = false,
+    bulkPredict: Boolean = false)
   {
-    val (sampledRatings, trueRatings) = ALSSuite.generateRatings(users, products,
-      features, samplingRate)
-    val model = ALS.train(sc.parallelize(sampledRatings), features, iterations)
+    val (sampledRatings, trueRatings, truePrefs) = ALSSuite.generateRatings(users, products,
+      features, samplingRate, implicitPrefs)
+    val model = implicitPrefs match {
+      case false => ALS.train(sc.parallelize(sampledRatings), features, iterations)
+      case true => ALS.trainImplicit(sc.parallelize(sampledRatings), features, iterations)
+    }
 
     val predictedU = new DoubleMatrix(users, features)
     for ((u, vec) <- model.userFeatures.collect(); i <- 0 until features) {
@@ -110,14 +149,43 @@ class ALSSuite extends FunSuite with BeforeAndAfterAll {
     for ((p, vec) <- model.productFeatures.collect(); i <- 0 until features) {
       predictedP.put(p, i, vec(i))
     }
-    val predictedRatings = predictedU.mmul(predictedP.transpose)
+    val predictedRatings = bulkPredict match {
+      case false => predictedU.mmul(predictedP.transpose)
+      case true =>
+        val allRatings = new DoubleMatrix(users, products)
+        val usersProducts = for (u <- 0 until users; p <- 0 until products) yield (u, p)
+        val userProductsRDD = sc.parallelize(usersProducts)
+        model.predict(userProductsRDD).collect().foreach { elem =>
+          allRatings.put(elem.user, elem.product, elem.rating)
+        }
+        allRatings
+    }
 
-    for (u <- 0 until users; p <- 0 until products) {
-      val prediction = predictedRatings.get(u, p)
-      val correct = trueRatings.get(u, p)
-      if (math.abs(prediction - correct) > matchThreshold) {
-        fail("Model failed to predict (%d, %d): %f vs %f\ncorr: %s\npred: %s\nU: %s\n P: %s".format(
-          u, p, correct, prediction, trueRatings, predictedRatings, predictedU, predictedP))
+    if (!implicitPrefs) {
+      for (u <- 0 until users; p <- 0 until products) {
+        val prediction = predictedRatings.get(u, p)
+        val correct = trueRatings.get(u, p)
+        if (math.abs(prediction - correct) > matchThreshold) {
+          fail("Model failed to predict (%d, %d): %f vs %f\ncorr: %s\npred: %s\nU: %s\n P: %s".format(
+            u, p, correct, prediction, trueRatings, predictedRatings, predictedU, predictedP))
+        }
+      }
+    } else {
+      // For implicit prefs we use the confidence-weighted RMSE to test (ref Mahout's tests)
+      var sqErr = 0.0
+      var denom = 0.0
+      for (u <- 0 until users; p <- 0 until products) {
+        val prediction = predictedRatings.get(u, p)
+        val truePref = truePrefs.get(u, p)
+        val confidence = 1 + 1.0 * trueRatings.get(u, p)
+        val err = confidence * (truePref - prediction) * (truePref - prediction)
+        sqErr += err
+        denom += 1
+      }
+      val rmse = math.sqrt(sqErr / denom)
+      if (math.abs(rmse) > matchThreshold) {
+        fail("Model failed to predict RMSE: %f\ncorr: %s\npred: %s\nU: %s\n P: %s".format(
+          rmse, truePrefs, predictedRatings, predictedU, predictedP))
       }
     }
   }

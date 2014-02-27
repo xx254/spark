@@ -31,6 +31,7 @@ import org.apache.spark.rdd.RDD
 
 
 class JobLoggerSuite extends FunSuite with LocalSparkContext with ShouldMatchers {
+  val WAIT_TIMEOUT_MILLIS = 10000
 
   test("inner method") {
     sc = new SparkContext("local", "joblogger")
@@ -41,12 +42,9 @@ class JobLoggerSuite extends FunSuite with LocalSparkContext with ShouldMatchers
       def buildJobDepTest(jobID: Int, stage: Stage) = buildJobDep(jobID, stage) 
     }
     type MyRDD = RDD[(Int, Int)]
-    def makeRdd(
-        numPartitions: Int,
-        dependencies: List[Dependency[_]]
-      ): MyRDD = {
+    def makeRdd(numPartitions: Int, dependencies: List[Dependency[_]]): MyRDD = {
       val maxPartition = numPartitions - 1
-      return new MyRDD(sc, dependencies) {
+      new MyRDD(sc, dependencies) {
         override def compute(split: Partition, context: TaskContext): Iterator[(Int, Int)] =
           throw new RuntimeException("should not be reached")
         override def getPartitions = (0 to maxPartition).map(i => new Partition {
@@ -58,11 +56,14 @@ class JobLoggerSuite extends FunSuite with LocalSparkContext with ShouldMatchers
     val parentRdd = makeRdd(4, Nil)
     val shuffleDep = new ShuffleDependency(parentRdd, null)
     val rootRdd = makeRdd(4, List(shuffleDep))
-    val shuffleMapStage = new Stage(1, parentRdd, Some(shuffleDep), Nil, jobID, None)
-    val rootStage = new Stage(0, rootRdd, None, List(shuffleMapStage), jobID, None)
-    
-    joblogger.onStageSubmitted(SparkListenerStageSubmitted(rootStage, 4, null))
-    joblogger.getRddNameTest(parentRdd) should be (parentRdd.getClass.getName)
+    val shuffleMapStage =
+      new Stage(1, parentRdd, parentRdd.partitions.size, Some(shuffleDep), Nil, jobID, None)
+    val rootStage =
+      new Stage(0, rootRdd, rootRdd.partitions.size, None, List(shuffleMapStage), jobID, None)
+    val rootStageInfo = new StageInfo(rootStage)
+
+    joblogger.onStageSubmitted(SparkListenerStageSubmitted(rootStageInfo, null))
+    joblogger.getRddNameTest(parentRdd) should be (parentRdd.getClass.getSimpleName)
     parentRdd.setName("MyRDD")
     joblogger.getRddNameTest(parentRdd) should be ("MyRDD")
     joblogger.createLogWriterTest(jobID)
@@ -88,8 +89,12 @@ class JobLoggerSuite extends FunSuite with LocalSparkContext with ShouldMatchers
     sc.addSparkListener(joblogger)
     val rdd = sc.parallelize(1 to 1e2.toInt, 4).map{ i => (i % 12, 2 * i) }
     rdd.reduceByKey(_+_).collect()
+
+    assert(sc.dagScheduler.listenerBus.waitUntilEmpty(WAIT_TIMEOUT_MILLIS))
+
+    val user = System.getProperty("user.name",  SparkContext.SPARK_UNKNOWN_USER)
     
-    joblogger.getLogDir should be ("/tmp/spark")
+    joblogger.getLogDir should be ("/tmp/spark-%s".format(user))
     joblogger.getJobIDtoPrintWriter.size should be (1)
     joblogger.getStageIDToJobID.size should be (2)
     joblogger.getStageIDToJobID.get(0) should be (Some(0))
@@ -109,13 +114,15 @@ class JobLoggerSuite extends FunSuite with LocalSparkContext with ShouldMatchers
       override def onTaskEnd(taskEnd: SparkListenerTaskEnd)  = onTaskEndCount += 1
       override def onJobEnd(jobEnd: SparkListenerJobEnd) = onJobEndCount += 1
       override def onJobStart(jobStart: SparkListenerJobStart) = onJobStartCount += 1
-      override def onStageCompleted(stageCompleted: StageCompleted) = onStageCompletedCount += 1
+      override def onStageCompleted(stageCompleted: SparkListenerStageCompleted) = onStageCompletedCount += 1
       override def onStageSubmitted(stageSubmitted: SparkListenerStageSubmitted) = onStageSubmittedCount += 1
     }
     sc.addSparkListener(joblogger)
     val rdd = sc.parallelize(1 to 1e2.toInt, 4).map{ i => (i % 12, 2 * i) }
     rdd.reduceByKey(_+_).collect()
-    
+
+    assert(sc.dagScheduler.listenerBus.waitUntilEmpty(WAIT_TIMEOUT_MILLIS))
+
     joblogger.onJobStartCount should be (1)
     joblogger.onJobEndCount should be (1)
     joblogger.onTaskEndCount should be (8)
