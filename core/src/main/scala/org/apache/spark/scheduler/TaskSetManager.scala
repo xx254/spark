@@ -366,8 +366,8 @@ private[spark] class TaskSetManager(
           //Peilong
           val dumpFile = new FileWriter("./misc/dumpInfo.txt",true)
           val timestamp = System.currentTimeMillis
-          dumpFile.write(timestamp+"\t"+"Starting TID %s on %s\n".format(
-            taskId, host))
+          dumpFile.write(timestamp+"\t"+"Starting task %s:%d as TID %s on executor %s: %s (%s)\n".format(
+            taskSet.id, index, taskId, execId, host, taskLocality))
 
           //Peilong
           dumpFile.close()
@@ -454,20 +454,20 @@ private[spark] class TaskSetManager(
       //Peilong
       val dumpFile = new FileWriter("./misc/dumpInfo.txt",true )
       val timestamp1 = System.currentTimeMillis
-      dumpFile.write(timestamp1+"\t"+"Finished TID %s on %s\n".format(
-        tid, info.host))
+      dumpFile.write(timestamp1+"\t"+"Finished TID %s in %d ms on %s\n".format(
+        tid, info.duration, info.host))
       val deserializeStart = result.metrics.deserializationStart
-      val deserializeEnd = result.metrics.deserializationEnd
-      val deserializeTime = result.metrics.executorDeserializeTime
-      val exeStart = result.metrics.executionStart
-      val exeEnd = result.metrics.executionEnd
-      val exeTime = result.metrics.executorRunTime
-      val gcStart = result.metrics.jvmGCStart
-      val gcEnd = result.metrics.jvmGCEnd
-      val gcTime = result.metrics.jvmGCTime
-      val serStart = result.metrics.serializationStart
-      val serEnd = result.metrics.serializationEnd
-      val serTime = result.metrics.resultSerializationTime
+      val deserializeEnd   = result.metrics.deserializationEnd
+      val deserializeTime  = result.metrics.executorDeserializeTime
+      val exeStart         = result.metrics.executionStart
+      val exeEnd           = result.metrics.executionEnd
+      val exeTime          = result.metrics.executorRunTime
+      val gcStart          = result.metrics.jvmGCStart
+      val gcEnd            = result.metrics.jvmGCEnd
+      val gcTime           = result.metrics.jvmGCTime
+      val serStart         = result.metrics.serializationStart
+      val serEnd           = result.metrics.serializationEnd
+      val serTime          = result.metrics.resultSerializationTime
 
       dumpFile.write(deserializeStart + "\t" + deserializeEnd + "\tDeserialization of TID %s: ".format(tid)
       + deserializeTime + " ms on %s\n".format(info.host))
@@ -478,17 +478,6 @@ private[spark] class TaskSetManager(
       dumpFile.write(serStart + "\t" + serEnd + "\tSerialization of TID %s: ".format(tid)
         + serTime + " ms on %s\n".format(info.host))
 
-      /*
-      timestamp = System.currentTimeMillis()
-      dumpFile.write(timestamp + "\t" + "Deserialization Time of TID %s: ".format(tid) + deserializeTime +
-        " ms on %s\n".format(info.host))
-      dumpFile.write(timestamp + "\t" + "Execution Time of TID %s: ".format(tid) + exeTime +
-        " ms on %s\n".format(info.host))
-      dumpFile.write(timestamp + "\t" + "Garbage Collection Time of TID %s: ".format(tid) + gcTime +
-        " ms on %s\n".format(info.host))
-      dumpFile.write(timestamp + "\t" + "Result Serialization Time of TID %s: ".format(tid) + serTime +
-        " ms on %s\n".format(info.host))
-        */
       dumpFile.close()
 
       sched.dagScheduler.taskEnded(

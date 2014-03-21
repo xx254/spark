@@ -157,7 +157,7 @@ class SparkContext(
   // Initialize the Spark UI
   private[spark] val ui = new SparkUI(this)
   ui.bind()
-  
+
   // Peilong Added dumpFile
   val dumpDir = new File("./misc")
   if( !dumpDir.exists()){
@@ -331,6 +331,7 @@ class SparkContext(
 
   /** Distribute a local Scala collection to form an RDD. */
   def parallelize[T: ClassTag](seq: Seq[T], numSlices: Int = defaultParallelism): RDD[T] = {
+    logInfo("///////////// Parallelize is called")
     new ParallelCollectionRDD[T](this, seq, numSlices, Map[Int, Seq[String]]())
   }
 

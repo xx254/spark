@@ -93,6 +93,7 @@ private[spark] class ParallelCollectionRDD[T: ClassTag](
 
   override def getPartitions: Array[Partition] = {
     val slices = ParallelCollectionRDD.slice(data, numSlices).toArray
+    //logInfo("Get Partitions: slice length -- %d, data length -- %d".format(slices.length, data.length))
     slices.indices.map(i => new ParallelCollectionPartition(id, i, slices(i))).toArray
   }
 

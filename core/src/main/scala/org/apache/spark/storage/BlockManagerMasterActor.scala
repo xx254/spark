@@ -30,6 +30,7 @@ import akka.pattern.ask
 import org.apache.spark.{SparkConf, Logging, SparkException}
 import org.apache.spark.storage.BlockManagerMessages._
 import org.apache.spark.util.{AkkaUtils, Utils}
+import java.io.FileWriter
 
 /**
  * BlockManagerMasterActor is an actor on the master node to track statuses of
@@ -352,17 +353,34 @@ object BlockManagerMasterActor {
         // and the diskSize here indicates the data size in or dropped to disk.
         // They can be both larger than 0, when a block is dropped from memory to disk.
         // Therefore, a safe way to set BlockStatus is to set its info in accurate modes.
+
+        //Peilong
+        val dumpFile = new FileWriter("./misc/dumpInfo.txt",true)
+
         if (storageLevel.useMemory) {
           _blocks.put(blockId, BlockStatus(storageLevel, memSize, 0))
           _remainingMem -= memSize
           logInfo("Added %s in memory on %s (size: %s, free: %s)".format(
             blockId, blockManagerId.hostPort, Utils.bytesToString(memSize),
             Utils.bytesToString(_remainingMem)))
+
+          //Peilong
+          val timestamp = System.currentTimeMillis
+          dumpFile.write(timestamp+"\t"+"Added %s in memory on %s (size: %s, free: %s)\n".format(
+            blockId, blockManagerId.hostPort, Utils.bytesToString(memSize),
+            Utils.bytesToString(_remainingMem)))
+          dumpFile.close()
         }
         if (storageLevel.useDisk) {
           _blocks.put(blockId, BlockStatus(storageLevel, 0, diskSize))
           logInfo("Added %s on disk on %s (size: %s)".format(
             blockId, blockManagerId.hostPort, Utils.bytesToString(diskSize)))
+
+          //Peilong
+          val timestamp = System.currentTimeMillis
+          dumpFile.write(timestamp+"\t"+"Added %s on disk on %s (size: %s)\n".format(
+            blockId, blockManagerId.hostPort, Utils.bytesToString(diskSize)))
+          dumpFile.close()
         }
       } else if (_blocks.containsKey(blockId)) {
         // If isValid is not true, drop the block.
