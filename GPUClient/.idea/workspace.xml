@@ -82,7 +82,7 @@
       <file leaf-file-name="GPUClient.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/GPUClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="61" selection-start="882" selection-end="882" vertical-scroll-proportion="0.45152354" vertical-offset="251" max-vertical-offset="828">
+            <state line="27" column="61" selection-start="882" selection-end="882" vertical-scroll-proportion="0.37738854" vertical-offset="177" max-vertical-offset="828">
               <folding />
             </state>
           </provider>
@@ -91,7 +91,7 @@
       <file leaf-file-name="LinkedList.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/LinkedList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0" vertical-offset="1151" max-vertical-offset="1512">
+            <state line="9" column="13" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1692">
               <folding />
             </state>
           </provider>
@@ -101,26 +101,6 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="95" column="10" selection-start="3316" selection-end="3316" vertical-scroll-proportion="0.0" vertical-offset="1598" max-vertical-offset="2124">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpBroadcast.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/spark-assembly-1.0.0-hadoop1.0.4.jar!/org/apache/spark/broadcast/HttpBroadcast.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="0" selection-start="1331" selection-end="1331" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="378">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RDD.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/spark-assembly-1.0.0-hadoop1.0.4.jar!/org/apache/spark/rdd/RDD.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="0" selection-start="16236" selection-end="16236" vertical-scroll-proportion="0.0" vertical-offset="2196" max-vertical-offset="2304">
               <folding />
             </state>
           </provider>
@@ -132,9 +112,6 @@
             <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
               <folding />
             </state>
-          </provider>
-          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-            <state />
           </provider>
         </entry>
       </file>
@@ -156,10 +133,10 @@
       </list>
     </option>
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="-4" />
-    <option name="width" value="1303" />
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
     <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -190,7 +167,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -249,13 +225,10 @@
               <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spark-assembly-1.0.0-hadoop1.0.4.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -510,21 +483,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <extension name="scalaCoverage" />
-      <module name="" />
-      <setting name="path" value="" />
-      <setting name="package" value="" />
-      <setting name="vmparams" value="" />
-      <setting name="params" value="" />
-      <setting name="workingDirectory" value="$PROJECT_DIR$" />
-      <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="" />
-      <setting name="testKind" value="Class" />
-      <setting name="showProgressMessages" value="true" />
-      <method />
-    </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
       <option name="ACTIVITY_CLASS" value="" />
@@ -542,6 +500,21 @@
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
       <method />
     </configuration>
     <list size="1">
@@ -601,14 +574,15 @@
       <workItem from="1409855451427" duration="1900000" />
       <workItem from="1409926289191" duration="6233000" />
       <workItem from="1410188398716" duration="3091000" />
+      <workItem from="1410224502360" duration="96000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58934000" />
+    <option name="totallyTimeSpent" value="59030000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="773" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -624,24 +598,24 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6482301" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28924304" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.289644" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3580247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6482301" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
-    <option name="RECENTLY_FILTERED_USER_GROUPS">
+    <option name="RECENTLY_FILTERED_USERS">
       <collection />
     </option>
   </component>
@@ -663,6 +637,41 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RmiServerIntf.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="28" selection-start="479" selection-end="479" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="432">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/GPUClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="61" selection-start="882" selection-end="882" vertical-scroll-proportion="0.0" vertical-offset="486" max-vertical-offset="828">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/LinkedList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1692">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="10" selection-start="3316" selection-end="3316" vertical-scroll-proportion="0.0" vertical-offset="1598" max-vertical-offset="2124">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/env.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RmiServerIntf.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="28" selection-start="479" selection-end="479" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="432">
           <folding />
         </state>
@@ -678,34 +687,18 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="96" column="0" selection-start="3373" selection-end="3373" vertical-scroll-proportion="0.0" vertical-offset="1681" max-vertical-offset="2124">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/spark-assembly-1.0.0-hadoop1.0.4.jar!/org/apache/spark/broadcast/HttpBroadcast.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="1331" selection-end="1331" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="378">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/spark-assembly-1.0.0-hadoop1.0.4.jar!/org/apache/spark/rdd/RDD.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="0" selection-start="16236" selection-end="16236" vertical-scroll-proportion="0.0" vertical-offset="2196" max-vertical-offset="2304">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/env.conf">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RmiServerIntf.java">
@@ -725,20 +718,18 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="94" column="0" selection-start="3341" selection-end="3341" vertical-scroll-proportion="0.0" vertical-offset="1692" max-vertical-offset="1854">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/env.conf">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RmiServerIntf.java">
@@ -758,20 +749,18 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="69" column="9" selection-start="2636" selection-end="2636" vertical-scroll-proportion="0.0" vertical-offset="1119" max-vertical-offset="1980">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/env.conf">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RmiServerIntf.java">
@@ -791,32 +780,16 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="0" selection-start="739" selection-end="739" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="918">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/env.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/spark-assembly-1.0.0-hadoop1.0.4.jar!/org/apache/spark/rdd/RDD.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="0" selection-start="16236" selection-end="16236" vertical-scroll-proportion="0.0" vertical-offset="2196" max-vertical-offset="2304">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/spark-assembly-1.0.0-hadoop1.0.4.jar!/org/apache/spark/broadcast/HttpBroadcast.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="1331" selection-end="1331" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="378">
+        <state line="11" column="61" selection-start="181" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
           <folding />
         </state>
       </provider>
@@ -831,9 +804,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/RunGPUExample.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="95" column="10" selection-start="3316" selection-end="3316" vertical-scroll-proportion="0.0" vertical-offset="1598" max-vertical-offset="2124">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -846,7 +817,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/uml/gpu/GPUClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="61" selection-start="882" selection-end="882" vertical-scroll-proportion="0.45152354" vertical-offset="251" max-vertical-offset="828">
+        <state line="27" column="61" selection-start="882" selection-end="882" vertical-scroll-proportion="0.37738854" vertical-offset="177" max-vertical-offset="828">
           <folding />
         </state>
       </provider>
